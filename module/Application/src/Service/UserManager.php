@@ -58,17 +58,18 @@ class UserManager
     }
 
     /**
+     * @param $userTypeCode
      * @param $user
      * @param $data
      * @return Customer|Organizer
      */
-    public function editUser($user, $data)
+    public function editUser($userTypeCode, $user, $data)
     {
         $isNew = false;
         if ($user === null) {
-            if (is_a($this->options['user'], Customer::class)) {
+            if ($userTypeCode == 'customer') {
                 $user  = new Customer();
-            } elseif (is_a($this->options['user'], Organizer::class)) {
+            } elseif ($userTypeCode == 'organizer') {
                 $user  = new Organizer();
             }
 

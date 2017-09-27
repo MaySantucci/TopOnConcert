@@ -13,7 +13,13 @@ class UserController extends AbstractActionController
      */
     private $entityManager;
 
-    public function __construct($entityManager, $userManager) {
+    /**
+     * @var \Application\Service\UserManager
+     */
+    private $userManager;
+
+    public function __construct($entityManager, $userManager)
+    {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
     }
@@ -25,7 +31,7 @@ class UserController extends AbstractActionController
 
     public function registerOrganizerAction()
     {
-        $form = $this->getForm();
+        $form = $this->getRegisterForm('organizer');
 
         // Use a different view template for rendering the page.
         $viewModel = new ViewModel();
@@ -38,7 +44,7 @@ class UserController extends AbstractActionController
 
     public function registerCustomerAction()
     {
-        $form = $this->getForm();
+        $form = $this->getRegisterForm('customer');
 
         // Use a different view template for rendering the page.
         $viewModel = new ViewModel();
@@ -48,10 +54,38 @@ class UserController extends AbstractActionController
         $viewModel->setVariable('userTypeCode', 'customer');
         return $viewModel;
     }
+    public function loginOrganizerAction()
+    {
+//        $form = $this->getLoginForm('organizer');
 
-    public function getForm() {
+        // Use a different view template for rendering the page.
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('user/login/login');
+//        $viewModel->setVariable('form', $form);
+        $viewModel->setVariable('userTypeName', 'Organizzatore');
+        $viewModel->setVariable('userTypeCode', 'organizer');
+        return $viewModel;
+    }
 
-        $id = (int) $this->params()->fromRoute('id', false);
+    public function loginCustomerAction()
+    {
+//        $form = $this->getLoginForm('customer');
+
+        // Use a different view template for rendering the page.
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('user/login/login');
+//        $viewModel->setVariable('form', $form);
+        $viewModel->setVariable('userTypeName', 'Cliente');
+        $viewModel->setVariable('userTypeCode', 'customer');
+        return $viewModel;
+    }
+
+
+
+    private function getRegisterForm($userTypeCode)
+    {
+
+        $id = (int)$this->params()->fromRoute('id', false);
 
         if ($id) {
             $user = null;
@@ -80,7 +114,7 @@ class UserController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $user = $this->userManager->editUser($user, $data);
+                $user = $this->userManager->editUser($userTypeCode, $user, $data);
 
                 if ($id) {
                     $this->flashMessenger()->addInfoMessage("Utente modificato con successo.");
@@ -88,7 +122,7 @@ class UserController extends AbstractActionController
                     $this->flashMessenger()->addInfoMessage("Utente creato con successo.");
                 }
 
-                return $this->redirect()->toRoute('user', ['action' => 'edit', 'id' => $user->getId()]);
+                return $this->redirect()->toRoute('user', ['action' => 'login-' . $userTypeCode, 'id' => $user->getId()]);
             }
         }
         return $form;
