@@ -1,0 +1,7 @@
+WINDOWS:
+php vendor\doctrine\doctrine-module\bin\doctrine-module orm:schema-tool:update --force
+php vendor\doctrine\doctrine-module\bin\doctrine-module migration:migrate 1
+
+LINUX:
+php vendor/doctrine/doctrine-module/bin/doctrine-module orm:schema-tool:update --force
+php vendor/doctrine/doctrine-module/bin/doctrine-module migration:migrate 1
