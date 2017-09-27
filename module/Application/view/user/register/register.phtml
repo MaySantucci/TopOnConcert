@@ -1,0 +1,63 @@
+<?php
+$title = 'Registrazione ' . $userTypeName;
+$this->headTitle($title);
+?>
+    <h1><?= $this->escapeHtml($title) ?></h1>
+
+<?php
+$nome = $form->get('fullName');
+$nome->setAttribute('class', 'form-control');
+
+$email = $form->get('email');
+$email->setAttribute('class', 'form-control');
+
+$password = $form->get('password');
+$password->setAttribute('class', 'form-control');
+
+$submit = $form->get('register_submit');
+$submit->setAttribute('class', 'btn btn-primary');
+
+$form->setAttribute('action', $this->url('user', ['action' => 'register-' . $userTypeCode]));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+
+<?php /*if ($userTypeCode == 'organizer') : ?>
+
+    <div class="form-group">
+        <?= $this->formLabel($company) ?>
+        <?= $this->formElement($company) ?>
+        <?= $this->formElementErrors()->render($company, ['class' => 'help-block']) ?>
+    </div>
+
+    <div class="form-group">
+        <?= $this->formLabel($vat) ?>
+        <?= $this->formElement($vat) ?>
+        <?= $this->formElementErrors()->render($vat, ['class' => 'help-block']) ?>
+    </div>
+
+<?php endif;*/ ?>
+
+    <div class="form-group">
+        <?= $this->formLabel($nome) ?>
+        <?= $this->formElement($nome) ?>
+        <?= $this->formElementErrors()->render($nome, ['class' => 'help-block']) ?>
+    </div>
+
+    <div class="form-group">
+        <?= $this->formLabel($email) ?>
+        <?= $this->formElement($email) ?>
+        <?= $this->formElementErrors()->render($email, ['class' => 'help-block']) ?>
+    </div>
+
+    <div class="form-group">
+        <?= $this->formLabel($password) ?>
+        <?= $this->formElement($password) ?>
+        <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
+    </div>
+
+<?php
+echo $this->formSubmit($submit);
+//echo $this->formHidden($form->get('id'));
+echo $this->form()->closeTag();

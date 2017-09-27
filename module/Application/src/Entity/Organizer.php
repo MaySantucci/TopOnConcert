@@ -19,13 +19,13 @@ class Organizer extends \Application\Entity\BaseEntity
     protected $fullName;
 
     /**
-     * @ORM\Column(type="text", name="company", nullable=false)
+     * @ORM\Column(type="text", name="company", nullable=true)
      * @var string $company
      */
     protected $company;
 
     /**
-     * @ORM\Column(type="text", name="vat", nullable=false)
+     * @ORM\Column(type="text", name="vat", nullable=true)
      * @var string $vat
      */
     protected $vat;
