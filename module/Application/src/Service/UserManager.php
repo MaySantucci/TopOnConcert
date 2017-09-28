@@ -24,6 +24,13 @@ class UserManager
         $this->sessionManager = $sessionManager;
     }
 
+    public function getUser()
+    {
+        $a = $this->sessionManager->getStorage()->toArray();
+        var_dump($a);
+        return null;
+    }
+
     public function login($userTypeCode, $email, $password)
     {
         $this->logout();
@@ -53,6 +60,7 @@ class UserManager
 
         $this->sessionManager->regenerateId();
         $this->sessionManager->setId($user->getId());
+        $this->sessionManager->getStorage()->setMetadata('a','b');
         $this->sessionManager->rememberMe(60 * 60 * 24 * 30);
         return new Result(Result::SUCCESS, $user);
     }

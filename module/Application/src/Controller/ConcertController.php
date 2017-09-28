@@ -18,13 +18,21 @@ class ConcertController extends AbstractActionController {
      */
     private $concertManager;
 
-    public function __construct($entityManager, $concertManager) {
+    /**
+     * @var \Application\Service\UserManager
+     */
+    private $userManager;
+
+    public function __construct($entityManager, $concertManager, $userManager) {
         $this->entityManager = $entityManager;
         $this->concertManager = $concertManager;
+        $this->userManager = $userManager;
     }
 
     public function indexAction() {
         $concerts = $this->concertManager->getList();
+
+        var_dump($this->userManager->getUser());
 
         $viewModel = new ViewModel();
         $viewModel->setTemplate('concert/index');
