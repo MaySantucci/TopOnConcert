@@ -2,9 +2,12 @@
 
 namespace Application\Controller;
 
+use Application\Form\User\LoginForm;
 use Application\Form\User\RegisterForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Authentication\Result;
+use Zend\Uri\Uri;
 
 class UserController extends AbstractActionController
 {
@@ -54,14 +57,14 @@ class UserController extends AbstractActionController
         $viewModel->setVariable('userTypeCode', 'customer');
         return $viewModel;
     }
+
     public function loginOrganizerAction()
     {
-//        $form = $this->getLoginForm('organizer');
+        $form = $this->getLoginForm('organizer');
 
-        // Use a different view template for rendering the page.
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/login/login');
-//        $viewModel->setVariable('form', $form);
+        $viewModel->setVariable('form', $form);
         $viewModel->setVariable('userTypeName', 'Organizzatore');
         $viewModel->setVariable('userTypeCode', 'organizer');
         return $viewModel;
@@ -69,17 +72,43 @@ class UserController extends AbstractActionController
 
     public function loginCustomerAction()
     {
-//        $form = $this->getLoginForm('customer');
+        $form = $this->getLoginForm('customer');
 
-        // Use a different view template for rendering the page.
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/login/login');
-//        $viewModel->setVariable('form', $form);
+        $viewModel->setVariable('form', $form);
         $viewModel->setVariable('userTypeName', 'Cliente');
         $viewModel->setVariable('userTypeCode', 'customer');
         return $viewModel;
     }
 
+    public function getLoginForm($userTypeCode)
+    {
+        $form = new LoginForm();
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $result = $this->userManager->login($userTypeCode, $data['email'], $data['password']);
+
+                if ($result->getCode() === Result::SUCCESS) {
+
+                    return $this->redirect()->toRoute('concert', ['action' => 'concert']);
+                } else {
+                    foreach ($result->getMessages() as $message) {
+                        $this->flashMessenger()->addErrorMessage($message);
+                    }
+                    $this->redirect()->toRoute('user', ['action' => 'login-' . $userTypeCode]);
+                }
+            }
+        }
+        return $form;
+    }
 
 
     private function getRegisterForm($userTypeCode)

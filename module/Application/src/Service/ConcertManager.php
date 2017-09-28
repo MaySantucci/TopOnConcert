@@ -14,6 +14,11 @@ class ConcertManager {
         $this->entityManager = $entityManager;
     }
 
+    public function getList() {
+        $concerts = $this->entityManager->getRepository(Concert::class)->findAll();
+        return $concerts;
+    }
+
     /**
      * @param $concert
      * @param $data
@@ -27,7 +32,7 @@ class ConcertManager {
         }
 
         $concert->setArtist($data['artist']);
-        $concert->setDate($data['date']);
+        $concert->setDate(new \DateTime($data['date']));
         $concert->setPrice($data['price']);
         $concert->setLocation($data['location']);
         $concert->setAvailability($data['availability']);

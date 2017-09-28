@@ -24,7 +24,12 @@ class ConcertController extends AbstractActionController {
     }
 
     public function indexAction() {
-        return new ViewModel();
+        $concerts = $this->concertManager->getList();
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('concert/index');
+        $viewModel->setVariable('concerts', $concerts);
+        return $viewModel;
     }
 
     //metodo per mostrare il template per l'aggiunta/modifica del concerto
