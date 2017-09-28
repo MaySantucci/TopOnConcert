@@ -31,7 +31,7 @@ class ConcertManager {
         $concert->setPrice($data['price']);
         $concert->setLocation($data['location']);
         $concert->setAvailability($data['availability']);
-        $concert->setOrganizer($data['organizer']);
+        //$concert->setOrganizer($data['organizer']);
 
 
         if ($isNew) {
@@ -41,7 +41,12 @@ class ConcertManager {
 
         return $concert;
     }
-
+    
+    /**
+     * @param type $id
+     * @return boolean
+     */
+    
     public function deleteConcert($id) {
 
         if ($id === null) {

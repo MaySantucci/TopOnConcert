@@ -52,11 +52,13 @@ class ConcertForm extends Form
                 'value' => $this->concert ? $this->concert->getArtist() : '',
             ],
         ]);
+        
         $this->add([
-            'type' => Element\DateTimeSelect::class,
+            'type' => Element\Date::class,
             'name' => 'date',
             'options' => [
-                'label' => 'Data e ora'
+                'label' => 'Data e ora',
+                'format' => 'Y-m-d'
             ],
             'attributes' => [
                 'placeholder' => 'Data e ora',
@@ -64,6 +66,7 @@ class ConcertForm extends Form
                 'value' => $this->concert ? $this->concert->getDate() : '',
             ],
         ]);
+        
         $this->add([
             'type' => Element\Number::class,
             'name' => 'price',
@@ -147,6 +150,8 @@ class ConcertForm extends Form
                 ],
             ],
         ]);
+        
+        /*
         $inputFilter->add([
             'name' => 'date',
             'required' => true,
@@ -154,6 +159,9 @@ class ConcertForm extends Form
                 ['name' => \Zend\Filter\DateTimeSelect::class],
             ],
         ]); 
+         * 
+         */
+        
         $inputFilter->add([
             'name' => 'price',
             'required' => true,
