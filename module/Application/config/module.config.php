@@ -44,20 +44,33 @@ return [
                     ],
                 ],
             ],
+            'concert' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/concert[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\ConcertController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\UserController::class => \Application\Controller\Factory\UserControllerFactory::class
+            Controller\UserController::class => \Application\Controller\Factory\UserControllerFactory::class,
+            Controller\ConcertController::class => \Application\Controller\Factory\ConcertControllerFactory::class
         ],
     ],
     'service_manager' => [
         'invokables' => [
             Form\User\RegisterForm::class => Form\User\RegisterForm::class,
+            Form\Concert\ConcertForm::class => Form\Concert\ConcertForm::class,
         ],
         'factories' => [
             Service\UserManager::class => Service\Factory\UserManagerFactory::class,
+            Service\ConcertManager::class => Service\Factory\ConcertManagerFactory::class,
         ],
     ],
     'view_manager' => [

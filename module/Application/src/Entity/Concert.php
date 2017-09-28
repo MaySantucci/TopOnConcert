@@ -47,7 +47,7 @@ class Concert extends \Application\Entity\BaseEntity
      * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id")
      * @var Organizer $organizer
      */
-    protected $organizer;
+    protected $organizer = null;
 
     /**
      * @ORM\OneToMany(targetEntity="\Application\Entity\Ticket", mappedBy="concert")

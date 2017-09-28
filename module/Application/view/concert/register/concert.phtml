@@ -1,0 +1,70 @@
+<?php
+$title = 'Concerto' ;
+$this->headTitle($title);
+?>
+    <h1><?= $this->escapeHtml($title) ?></h1>
+
+<?php
+$artist = $form->get('artist');
+$artist->setAttribute('class', 'form-control');
+
+$date = $form->get('date');
+$date->setAttribute('class', 'form-control');
+
+$price = $form->get('price');
+$price->setAttribute('class', 'form-control');
+
+$location = $form->get('location');
+$location->setAttribute('class', 'form-control');
+
+$availability = $form->get('availability');
+$availability->setAttribute('class', 'form-control');
+/*
+$organizer = $form->get('organizer');
+$organizer->setAttribute('class', 'form-control');
+*/
+
+$submit = $form->get('concert_submit');
+$submit->setAttribute('class', 'btn btn-primary');
+
+$form->setAttribute('action', $this->url('concert', ['action' => 'concert']));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+
+
+    <div class="form-group">
+        <?= $this->formLabel($artist) ?>
+        <?= $this->formElement($artist) ?>
+        <?= $this->formElementErrors()->render($artist, ['class' => 'help-block']) ?>
+    </div>
+    
+    <div class="form-group">
+        <?= $this->formLabel($date) ?>
+        <?= $this->formElement($date) ?>
+        <?= $this->formElementErrors()->render($date, ['class' => 'help-block']) ?>
+    </div>
+    
+    <div class="form-group">
+        <?= $this->formLabel($price) ?>
+        <?= $this->formElement($price) ?>
+        <?= $this->formElementErrors()->render($price, ['class' => 'help-block']) ?>
+    </div>
+    
+    <div class="form-group">
+        <?= $this->formLabel($location) ?>
+        <?= $this->formElement($location) ?>
+        <?= $this->formElementErrors()->render($location, ['class' => 'help-block']) ?>
+    </div>
+    
+    <div class="form-group">
+        <?= $this->formLabel($availability) ?>
+        <?= $this->formElement($availability) ?>
+        <?= $this->formElementErrors()->render($availability, ['class' => 'help-block']) ?>
+    </div>
+
+<?php
+echo $this->formSubmit($submit);
+//echo $this->formHidden($form->get('id'));
+echo $this->form()->closeTag();

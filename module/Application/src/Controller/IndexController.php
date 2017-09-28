@@ -17,9 +17,4 @@ class IndexController extends AbstractActionController
         return new ViewModel();
     }
 
-    public function pippoAction()
-    {
-        var_dump('pippopopo');
-        return;
-    }
 }
