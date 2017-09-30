@@ -27,7 +27,6 @@ class UserManager
     public function getUser()
     {
         $a = $this->sessionManager->getStorage()->toArray();
-        var_dump($a);
         return null;
     }
 

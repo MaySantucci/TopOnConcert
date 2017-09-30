@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Application\Entity\Concert;
+
 class ConcertManager {
 
     /**
@@ -42,25 +43,34 @@ class ConcertManager {
         if ($isNew) {
             $this->entityManager->persist($concert);
         }
+        
         $this->entityManager->flush();
 
         return $concert;
     }
-    
+
     /**
+     * 
      * @param type $id
      * @return boolean
      */
-    
     public function deleteConcert($id) {
+        $concert_removed = $this->entityManager->getRepository(Concert::class)->find($id);
 
-        if ($id === null) {
+        echo "\n id passato = " . $id;
+
+        if ($id === null | $id < 0) {
+            echo "concerto non trovato" . $id;
             return false;
-        } elseif ($id >= 0) {
-            $concert = $this->entityManager->getRepository(Concert::class)->find($id);
-            $this->entityManager->remove($concert);
-            return true;
         }
+        
+          $this->entityManager->remove($concert_removed);
+          $this->entityManager->flush();
+
+          echo "concerto trovato" . $id;
+
+          return true;
+        
     }
 
 }

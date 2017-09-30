@@ -10,16 +10,24 @@ $this->headTitle($title);
     <tr>
         <th>Gruppo</th>
         <th>Luogo</th>
+        <th>Data</th>
+        <th>Ora </th>
         <th>Prezzo</th>
         <th>Disponibilità</th>
-        
+        <th> &nbsp; </th>
+
     </tr>
     <?php foreach ($concerts as $concert) : ?>
         <tr>
             <td><?= $concert->getArtist() ?></td>
             <td><?= $concert->getLocation() ?></td>
-            <td><?= $concert->getPrice() ?></td>
+            <td><?= date('d-m-Y') ?></td>
+            <td><?= date('H:i') ?></td>
+            <td><?= $concert->getPrice() . " €" ?></td>
             <td><?= $concert->getAvailability() ?></td>
+            <td>               
+                <a class="btn btn-danger" href="<?= $this->url('concert', ['action' => 'delete-concert', 'id' => $concert->getId()]) ?>">Elimina</a>
+            </td>
         </tr>
     <?php endforeach; ?>
 </table>

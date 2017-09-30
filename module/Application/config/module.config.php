@@ -47,7 +47,7 @@ return [
             'concert' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route' => '/concert[/:action]',
+                    'route' => '/concert[/:action][/:id]',
                     'defaults' => [
                         'controller' => Controller\ConcertController::class,
                         'action' => 'index',

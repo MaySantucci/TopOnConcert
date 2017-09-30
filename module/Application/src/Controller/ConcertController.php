@@ -32,7 +32,7 @@ class ConcertController extends AbstractActionController {
     public function indexAction() {
         $concerts = $this->concertManager->getList();
 
-        var_dump($this->userManager->getUser());
+       // var_dump($this->userManager->getUser());
 
         $viewModel = new ViewModel();
         $viewModel->setTemplate('concert/index');
@@ -101,6 +101,8 @@ class ConcertController extends AbstractActionController {
         } else {            
             $this->flashMessenger()->addInfoMessage("Non &egrave; stato possibile eliminare il concerto.");
         }
+        
+        return $this->redirect()->toRoute('concert');
     }
 
 }
