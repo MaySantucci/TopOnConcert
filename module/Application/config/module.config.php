@@ -71,6 +71,7 @@ return [
         'factories' => [
             Service\UserManager::class => Service\Factory\UserManagerFactory::class,
             Service\ConcertManager::class => Service\Factory\ConcertManagerFactory::class,
+            Service\OrganizerManager::class => Service\Factory\OrganizerManagerFactory::class,
         ],
     ],
     'view_manager' => [
