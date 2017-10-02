@@ -10,8 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="Concert")
  * @ORM\HasLifecycleCallbacks
  */
-class Concert extends \Application\Entity\BaseEntity
-{
+class Concert extends \Application\Entity\BaseEntity {
+
     /**
      * @ORM\Column(type="text", name="artist", nullable=false)
      * @var string $artist
@@ -59,120 +59,113 @@ class Concert extends \Application\Entity\BaseEntity
     /**
      * Concert constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->tickets = new ArrayCollection();
     }
 
     /**
      * @return string
      */
-    public function getArtist()
-    {
+    public function getArtist() {
         return $this->artist;
     }
 
     /**
      * @param string $artist
      */
-    public function setArtist($artist)
-    {
+    public function setArtist($artist) {
         $this->artist = $artist;
     }
 
     /**
      * @return \DateTime
      */
-    public function getDate()
-    {
+    public function getDate() {
         return $this->date;
     }
 
     /**
      * @param \DateTime $date
      */
-    public function setDate($date)
-    {
+    public function setDate($date) {
         $this->date = $date;
     }
 
     /**
      * @return float
      */
-    public function getPrice()
-    {
+    public function getPrice() {
         return $this->price;
     }
 
     /**
      * @param float $price
      */
-    public function setPrice($price)
-    {
+    public function setPrice($price) {
         $this->price = $price;
     }
 
     /**
      * @return string
      */
-    public function getLocation()
-    {
+    public function getLocation() {
         return $this->location;
     }
 
     /**
      * @param string $location
      */
-    public function setLocation($location)
-    {
+    public function setLocation($location) {
         $this->location = $location;
     }
 
     /**
      * @return int
      */
-    public function getAvailability()
-    {
+    public function getAvailability() {
         return $this->availability;
     }
 
     /**
      * @param int $availability
      */
-    public function setAvailability($availability)
-    {
+    public function setAvailability($availability) {
         $this->availability = $availability;
     }
 
     /**
      * @return Organizer
      */
-    public function getOrganizer()
-    {
+    public function getOrganizer() {
         return $this->organizer;
+    }
+        /**
+     * 
+     * @return type
+     */
+    public function __toString() {
+        return $this->getOrganizer(); // or you can use any other method to retrurn value
     }
 
     /**
      * @param Organizer $organizer
      */
-    public function setOrganizer($organizer)
-    {
+    public function setOrganizer($organizer) {
         $this->organizer = $organizer;
     }
 
     /**
      * @return ArrayCollection
      */
-    public function getTickets()
-    {
+    public function getTickets() {
         return $this->tickets;
     }
 
     /**
      * @param ArrayCollection $ticket
      */
-    public function addTicket($ticket)
-    {
+    public function addTicket($ticket) {
         $this->tickets[] = $ticket;
     }
+
 }

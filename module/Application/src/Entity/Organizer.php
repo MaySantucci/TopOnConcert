@@ -56,6 +56,15 @@ class Organizer extends \Application\Entity\BaseEntity
     {
         $this->concerts = new ArrayCollection();
     }
+    
+    
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->id;
+    }
 
     /**
      * @return string

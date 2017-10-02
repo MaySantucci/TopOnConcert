@@ -37,9 +37,9 @@ class ConcertManager {
         $concert->setPrice($data['price']);
         $concert->setLocation($data['location']);
         $concert->setAvailability($data['availability']);
-        $organizer = $this->entityManager->getRepository(\Application\Entity\Organizer::class)->find(1);
+        $organizer = $this->entityManager->getRepository(\Application\Entity\Organizer::class)->find(3);
         $concert->setOrganizer($organizer);
-
+        //echo \get_class($organizer);
 
         if ($isNew) {
             $this->entityManager->persist($concert);
