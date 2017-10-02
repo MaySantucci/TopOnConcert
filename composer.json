@@ -26,7 +26,8 @@
         "zendframework/zend-servicemanager-di": "^1.0",
         "doctrine/doctrine-orm-module": "dev-master",
         "doctrine/doctrine-module": "dev-master",
-        "doctrine/migrations": "^1.4"
+        "doctrine/migrations": "^1.4",
+        "zendframework/zend-authentication": "^2.5"
     },
     "autoload": {
         "psr-4": {
