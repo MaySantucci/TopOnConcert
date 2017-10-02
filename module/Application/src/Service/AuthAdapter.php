@@ -2,6 +2,8 @@
 
 namespace Application\Service;
 
+use Application\Entity\Customer;
+use Application\Entity\Organizer;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 
@@ -17,52 +19,43 @@ class AuthAdapter implements AdapterInterface
         $this->entityManager = $entityManager;
     }
 
+    private $email;
+    private $password;
+    private $userTypeCode;
+
+    public function setCredentials($userTypeCode, $email, $password)
+    {
+        $this->email = $email;
+        $this->password = $password;
+        $this->userTypeCode = $userTypeCode;
+    }
+
     /**
      * Performs an authentication attempt.
      */
     public function authenticate()
     {
-
-        die("oououou");
-        // Check the database if there is a user with such email.
-        $user = $this->entityManager->getRepository(User::class)
-            ->findOneByEmail($this->email);
-
-        // If there is no such user, return 'Identity Not Found' status.
-        if ($user == null) {
+        $user = null;
+        switch ($this->userTypeCode) {
+            case 'customer':
+                $user = $this->entityManager->getRepository(Customer::class)
+                    ->findOneByEmail($this->email);
+                break;
+            case 'organizer':
+                $user = $this->entityManager->getRepository(Organizer::class)
+                    ->findOneByEmail($this->email);
+                break;
+        }
+        if (!$user) {
             return new Result(
-                Result::FAILURE_IDENTITY_NOT_FOUND,
-                null,
-                ['Invalid credentials.']);
+                Result::FAILURE_IDENTITY_NOT_FOUND, null, ['Invalid Email.']);
         }
 
-        // If the user with such email exists, we need to check if it is active or retired.
-        // Do not allow retired users to log in.
-        if ($user->getStatus() == User::STATUS_RETIRED) {
+        if ($user->getPassword() != md5($this->password)) {
             return new Result(
-                Result::FAILURE,
-                null,
-                ['User is retired.']);
+                Result::FAILURE_IDENTITY_NOT_FOUND, null, ['Invalid credentials.']);
         }
 
-        // Now we need to calculate hash based on user-entered password and compare
-        // it with the password hash stored in database.
-        $bcrypt = new Bcrypt();
-        $passwordHash = $user->getPassword();
-
-        if ($bcrypt->verify($this->password, $passwordHash)) {
-            // Great! The password hash matches. Return user identity (email) to be
-            // saved in session for later use.
-            return new Result(
-                Result::SUCCESS,
-                $this->email,
-                ['Authenticated successfully.']);
-        }
-
-        // If password check didn't pass return 'Invalid Credential' failure status.
-        return new Result(
-            Result::FAILURE_CREDENTIAL_INVALID,
-            null,
-            ['Invalid credentials.']);
+        return new Result(Result::SUCCESS, $user);
     }
 }

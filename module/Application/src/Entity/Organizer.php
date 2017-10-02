@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Organizer extends \Application\Entity\BaseEntity
 {
+    const USER_TYPE = 'organizer';
+
     /**
      * @ORM\Column(type="text", name="fullName", nullable=false)
      * @var string $fullName
@@ -161,5 +163,10 @@ class Organizer extends \Application\Entity\BaseEntity
     public function addConcert($concert)
     {
         $this->concerts[] = $concert;
+    }
+
+    public function getTypeCode()
+    {
+        return static::USER_TYPE;
     }
 }

@@ -13,6 +13,7 @@ use Application\Service\Factory\AuthAdapterFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\View\View;
 
 return [
     'router' => [
@@ -77,6 +78,14 @@ return [
             Service\OrganizerManager::class => Service\Factory\OrganizerManagerFactory::class,
             Service\AuthAdapter::class => Service\Factory\AuthAdapterFactory::class,
             Service\AuthenticationService::class => Service\Factory\AuthenticationServiceFactory::class,
+        ],
+    ],
+    'view_helpers' => [
+        'factories' => [
+            \Application\View\Helper\Authentication::class => \Application\View\Helper\Factory\AuthenticationFactory::class,
+        ],
+        'aliases' => [
+            'identity' => \Application\View\Helper\Authentication::class,
         ],
     ],
     'view_manager' => [

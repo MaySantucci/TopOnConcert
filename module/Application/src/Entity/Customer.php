@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Customer extends \Application\Entity\BaseEntity
 {
+    const USER_TYPE = 'customer';
+
     /**
      * @ORM\Column(type="text", name="fullName", nullable=false)
      * @var string $fullName
@@ -107,5 +109,10 @@ class Customer extends \Application\Entity\BaseEntity
     public function addConcert($ticket)
     {
         $this->tickets[] = $ticket;
+    }
+
+    public function getTypeCode()
+    {
+        return static::USER_TYPE;
     }
 }

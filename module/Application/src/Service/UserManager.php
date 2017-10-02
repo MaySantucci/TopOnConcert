@@ -23,19 +23,22 @@ class UserManager
     private $sessionManager;
 
     /**
-     * @var AuthAdapter
+     * @var AuthenticationService
      */
     private $authenticationService;
 
-    public function __construct($entityManager, $sessionManager)
+    public function __construct($entityManager, $sessionManager, $authenticationService)
     {
         $this->entityManager = $entityManager;
         $this->sessionManager = $sessionManager;
+        $this->authenticationService = $authenticationService;
     }
 
     public function getUser()
     {
         $a = $this->sessionManager->getStorage()->toArray();
+        var_dump($a);
+        die();
         return null;
     }
 
@@ -43,39 +46,19 @@ class UserManager
     {
         $this->logout();
 
-        $user = null;
-        switch ($userTypeCode) {
+        $authenticationAdapter = $this->authenticationService->getAdapter();
+        $authenticationAdapter->setCredentials($userTypeCode, $email, $password);
 
-            case 'customer':
-                $user = $this->entityManager->getRepository(Customer::class)
-                    ->findOneByEmail($email);
-                break;
-            case 'organizer':
-                $user = $this->entityManager->getRepository(Organizer::class)
-                    ->findOneByEmail($email);
-                break;
-        }
+        $result = $this->authenticationService->authenticate();
 
-        if (!$user) {
-            return new Result(
-                Result::FAILURE_IDENTITY_NOT_FOUND, null, ['Invalid Email.']);
-        }
-
-        if ($user->getPassword() != md5($password)) {
-            return new Result(
-                Result::FAILURE_IDENTITY_NOT_FOUND, null, ['Invalid credentials.']);
-        }
-
-        $this->sessionManager->regenerateId();
-        $this->sessionManager->setId($user->getId());
-        $this->sessionManager->getStorage()->setMetadata('a', 'b');
-        $this->sessionManager->rememberMe(60 * 60 * 24 * 30);
-        return new Result(Result::SUCCESS, $user);
+        return $result;
     }
 
     public function logout()
     {
-        $this->sessionManager->forgetMe();
+        if ($this->authenticationService->hasIdentity()) {
+            $this->authenticationService->clearIdentity();
+        }
     }
 
     private function validatePassword($user, $password)
@@ -143,12 +126,12 @@ class UserManager
         if (in_array($controllerName . '\\' . $actionName, $allowedControllers)) {
             return true;
         } else if ($this->authenticationService->hasIdentity()) {
-            die("sono loggato");
+
             // @todo aggiungere il controllo sul tipo di utente
 
             return true;
         }
 
-        return $controller->redirect()->toRoute('home');
+        $controller->redirect()->toRoute('home');
     }
 }

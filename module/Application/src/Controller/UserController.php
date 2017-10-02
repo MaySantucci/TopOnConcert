@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Customer;
 use Application\Form\User\LoginForm;
 use Application\Form\User\RegisterForm;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -45,9 +46,16 @@ class UserController extends AbstractActionController
         return $viewModel;
     }
 
+    public function logutAction()
+    {
+        $this->userManager->logout();
+
+        $this->redirect()->toRoute('home');
+    }
+
     public function registerCustomerAction()
     {
-        $form = $this->getRegisterForm('customer');
+        $form = $this->getRegisterForm(Customer::USER_TYPE);
 
         // Use a different view template for rendering the page.
         $viewModel = new ViewModel();
@@ -62,6 +70,10 @@ class UserController extends AbstractActionController
     {
         $form = $this->getLoginForm('organizer');
 
+        if ($this->getRequest()->isPost()) {
+            $this->tryLogin($form, 'organizer');
+        }
+
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/login/login');
         $viewModel->setVariable('form', $form);
@@ -73,6 +85,10 @@ class UserController extends AbstractActionController
     public function loginCustomerAction()
     {
         $form = $this->getLoginForm('customer');
+
+        if ($this->getRequest()->isPost()) {
+            $this->tryLogin($form, 'customer');
+        }
 
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/login/login');
@@ -90,24 +106,25 @@ class UserController extends AbstractActionController
             $data = $this->params()->fromPost();
 
             $form->setData($data);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $result = $this->userManager->login($userTypeCode, $data['email'], $data['password']);
-
-                if ($result->getCode() === Result::SUCCESS) {
-
-                    return $this->redirect()->toRoute('concert', ['action' => 'concert']);
-                } else {
-                    foreach ($result->getMessages() as $message) {
-                        $this->flashMessenger()->addErrorMessage($message);
-                    }
-                    $this->redirect()->toRoute('user', ['action' => 'login-' . $userTypeCode]);
-                }
-            }
         }
         return $form;
+    }
+
+    public function tryLogin($form, $userTypeCode) {
+        if ($form->isValid()) {
+            $data = $form->getData();
+
+            $result = $this->userManager->login($userTypeCode, $data['email'], $data['password']);
+
+            if ($result->getCode() === Result::SUCCESS) {
+                $this->redirect()->toRoute('concert', ['action' => 'concert']);
+            } else {
+                foreach ($result->getMessages() as $message) {
+                    $this->flashMessenger()->addErrorMessage($message);
+                }
+                $this->redirect()->toRoute('user', ['action' => 'login-' . $userTypeCode]);
+            }
+        }
     }
 
 
@@ -126,7 +143,7 @@ class UserController extends AbstractActionController
 
             if (!$user) {
                 $this->flashMessenger()->addInfoMessage("Dato inesistente del database.");
-                return $this->redirect()->toRoute('home');
+                $this->redirect()->toRoute('home');
             }
 
             $form = new RegisterForm('update', $this->entityManager, $user);
