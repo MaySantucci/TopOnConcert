@@ -2,9 +2,13 @@
 
 namespace Application\Service;
 
+use Application\Controller\ConcertController;
+use Application\Controller\IndexController;
+use Application\Controller\UserController;
 use Application\Entity\Customer;
 use Application\Entity\Organizer;
 use Zend\Authentication\Result;
+use Zend\Mvc\MvcEvent;
 
 class UserManager
 {
@@ -17,6 +21,11 @@ class UserManager
      * @var \Zend\Session\SessionManager
      */
     private $sessionManager;
+
+    /**
+     * @var AuthAdapter
+     */
+    private $authenticationService;
 
     public function __construct($entityManager, $sessionManager)
     {
@@ -59,7 +68,7 @@ class UserManager
 
         $this->sessionManager->regenerateId();
         $this->sessionManager->setId($user->getId());
-        $this->sessionManager->getStorage()->setMetadata('a','b');
+        $this->sessionManager->getStorage()->setMetadata('a', 'b');
         $this->sessionManager->rememberMe(60 * 60 * 24 * 30);
         return new Result(Result::SUCCESS, $user);
     }
@@ -111,5 +120,35 @@ class UserManager
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    public function initUser(MvcEvent $event)
+    {
+        $controller = $event->getTarget();
+
+        $controllerName = $event->getRouteMatch()->getParam('controller', null);
+
+        // Convert dash-style action name to camel-case.
+        $actionName = str_replace('-', '', lcfirst(ucwords($event->getRouteMatch()->getParam('action', null), '-')));
+
+        $allowedControllers = [
+            ConcertController::class . '\index',
+            IndexController::class . '\index',
+            UserController::class . '\loginCustomer',
+            UserController::class . '\loginOrganizer',
+            UserController::class . '\registerCustomer',
+            UserController::class . '\registerOrganizer'
+        ];
+
+        if (in_array($controllerName . '\\' . $actionName, $allowedControllers)) {
+            return true;
+        } else if ($this->authenticationService->hasIdentity()) {
+            die("sono loggato");
+            // @todo aggiungere il controllo sul tipo di utente
+
+            return true;
+        }
+
+        return $controller->redirect()->toRoute('home');
     }
 }

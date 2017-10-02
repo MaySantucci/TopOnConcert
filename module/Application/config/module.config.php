@@ -7,6 +7,9 @@
 
 namespace Application;
 
+use Application\Service\AuthAdapter;
+use Application\Service\AuthenticationService;
+use Application\Service\Factory\AuthAdapterFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -72,6 +75,8 @@ return [
             Service\UserManager::class => Service\Factory\UserManagerFactory::class,
             Service\ConcertManager::class => Service\Factory\ConcertManagerFactory::class,
             Service\OrganizerManager::class => Service\Factory\OrganizerManagerFactory::class,
+            Service\AuthAdapter::class => Service\Factory\AuthAdapterFactory::class,
+            Service\AuthenticationService::class => Service\Factory\AuthenticationServiceFactory::class,
         ],
     ],
     'view_manager' => [
