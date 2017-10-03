@@ -1,4 +1,3 @@
-
 <?php
 // module/Concert/view/concert/concert/index.phtml:
 
@@ -7,7 +6,7 @@ $this->headTitle($title);
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 
-    <!-- INTERFACCIA ORGANIZZATORE LOGGATO -->
+<!-- INTERFACCIA ORGANIZZATORE LOGGATO -->
 <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
     <p><a class="btn btn-primary" href="<?= $this->url('concert', ['action' => 'concert']) ?>">Aggiungi</a></p>
 <?php endif; ?>
@@ -17,43 +16,43 @@ $this->headTitle($title);
         <th>Gruppo</th>
         <th>Luogo</th>
         <th>Data</th>
-        <th>Ora </th>
         <th>Prezzo</th>
         <th>Disponibilità</th>
         <th>Organizzatore</th>
         <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
-            <th> &nbsp; </th>
+            <th> &nbsp;</th>
         <?php endif; ?>
 
         <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
-            <th> &nbsp; </th>
-            <th> &nbsp; </th>
+            <th> &nbsp;</th>
+            <th> &nbsp;</th>
         <?php endif; ?>
 
     </tr>
     <?php foreach ($concerts as $concert) : ?>
+        <?php /** @var \Application\Entity\Concert $concert */ ?>
         <tr>
             <td><?= $concert->getArtist() ?></td>
             <td><?= $concert->getLocation() ?></td>
-            <td><?= date('d-m-Y') ?></td>
-            <td><?= date('H:i') ?></td>
+            <td><?= date_format($concert->getDate(), 'd-m-Y') ?></td>
             <td><?= $concert->getPrice() . " €" ?></td>
             <td><?= $concert->getAvailability() ?></td>
             <td><?= $concert->getOrganizer()->getFullName() ?></td>
-            
-    <!-- INTERFACCIA ORGANIZZATORE LOGGATO -->
+
+            <!-- INTERFACCIA ORGANIZZATORE LOGGATO -->
             <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
-                <td>               
+                <td>
                     <a class="btn btn-default" href="<?= $this->url('concert', ['action' => 'concert', 'id' => $concert->getId()]) ?>">Modifica</a>
                 </td>
-                <td>               
-                    <a class="btn btn-danger" href="<?= $this->url('concert', ['action' => 'delete-concert', 'id' => $concert->getId()]) ?>">Elimina</a>
+                <td>
+                    <a class="btn btn-danger"
+                       href="<?= $this->url('concert', ['action' => 'delete-concert', 'id' => $concert->getId()]) ?>">Elimina</a>
                 </td>
             <?php endif; ?>
 
-    <!-- INTERFACCIA CLIENTE LOGGATO -->
+            <!-- INTERFACCIA CLIENTE LOGGATO -->
             <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
-                <td>               
+                <td>
                     <a class="btn btn-success" href="">Acquista</a>
                 </td>
             <?php endif; ?>

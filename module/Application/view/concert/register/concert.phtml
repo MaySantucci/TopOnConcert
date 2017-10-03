@@ -26,8 +26,6 @@ $organizer->setAttribute('class', 'form-control');
 
 $submit = $form->get('concert_submit');
 $submit->setAttribute('class', 'btn btn-primary');
-
-$form->setAttribute('action', $this->url('concert', ['action' => 'concert']));
 $form->prepare();
 
 echo $this->form()->openTag($form);
@@ -66,5 +64,4 @@ echo $this->form()->openTag($form);
 
 <?php
 echo $this->formSubmit($submit);
-echo $this->formHidden($form->get('id'));
 echo $this->form()->closeTag();

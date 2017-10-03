@@ -51,7 +51,7 @@ class ConcertController extends AbstractActionController {
     }
 
     private function getConcertForm() {
-        $id = (int) $this->params()->fromPost('id', false);
+        $id = (int) $this->params()->fromRoute('id', false);
 
         if ($id) {
             $concert = $this->entityManager->getRepository(\Application\Entity\Concert::class)->find($id);
@@ -62,9 +62,12 @@ class ConcertController extends AbstractActionController {
             }
 
             $form = new ConcertForm($this->entityManager, $concert);
+            $form->setAttribute('action', $this->url()->fromRoute('concert', ['action' => 'concert', 'id' => $id]));
+
         } else {
             $concert = null;
             $form = new ConcertForm($this->entityManager, $concert);
+            $form->setAttribute('action', $this->url()->fromRoute('concert', ['action' => 'concert']));
         }
 
         if ($this->getRequest()->isPost()) {
