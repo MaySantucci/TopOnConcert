@@ -51,7 +51,6 @@ class ConcertController extends AbstractActionController {
     }
 
     private function getConcertForm() {
-
         $id = (int) $this->params()->fromRoute('id', false);
 
         if ($id) {

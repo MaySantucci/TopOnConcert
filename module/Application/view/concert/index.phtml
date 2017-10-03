@@ -9,7 +9,7 @@ $this->headTitle($title);
 
     <!-- INTERFACCIA ORGANIZZATORE LOGGATO -->
 <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
-    <a class="btn btn-primary" href="<?= $this->url('concert', ['action' => 'concert']) ?>">Aggiungi</a>
+    <p><a class="btn btn-primary" href="<?= $this->url('concert', ['action' => 'concert']) ?>">Aggiungi</a></p>
 <?php endif; ?>
 
 <table class="table">
