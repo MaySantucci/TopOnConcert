@@ -47,7 +47,7 @@ class Concert extends \Application\Entity\BaseEntity {
      * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id")
      * @var Organizer $organizer
      */
-    protected $organizer = null;
+    protected $organizer;
 
     /**
      * @ORM\OneToMany(targetEntity="\Application\Entity\Ticket", mappedBy="concert")
@@ -138,13 +138,6 @@ class Concert extends \Application\Entity\BaseEntity {
      */
     public function getOrganizer() {
         return $this->organizer;
-    }
-        /**
-     * 
-     * @return type
-     */
-    public function __toString() {
-        return $this->getOrganizer(); // or you can use any other method to retrurn value
     }
 
     /**

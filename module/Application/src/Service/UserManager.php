@@ -27,17 +27,34 @@ class UserManager {
      */
     private $authenticationService;
 
+    /**
+     * @var Organizer|Customer
+     */
+    private $currentUser = null;
+
     public function __construct($entityManager, $sessionManager, $authenticationService) {
         $this->entityManager = $entityManager;
         $this->sessionManager = $sessionManager;
         $this->authenticationService = $authenticationService;
     }
 
-    public function getUser() {
-        $a = $this->sessionManager->getStorage()->toArray();
-        var_dump($a);
-        die();
-        return null;
+
+    public function getCurrentUser() {
+        if ($this->currentUser === null) {
+            $userId = $this->authenticationService->getIdentity()->getId();
+            $userType = $this->authenticationService->getIdentity()->getTypeCode();
+
+            switch ($userType) {
+                case Customer::USER_TYPE:
+                    $this->currentUser = $this->entityManager->getRepository(Customer::class)->find($userId);
+                    break;
+                case Organizer::USER_TYPE:
+                    $this->currentUser = $this->entityManager->getRepository(Organizer::class)->find($userId);
+                    break;
+            }
+        }
+
+        return $this->currentUser;
     }
 
     public function login($userTypeCode, $email, $password) {
@@ -125,8 +142,19 @@ class UserManager {
             if ($this->authenticationService->getIdentity()->getTypeCode() == Customer::USER_TYPE) {
                 //@todo cliente loggato - interfaccia con lista concerti, lista acquisti, logout
                 $controller->redirect()->toRoute('home');
-            } else {
+            } else if ($this->authenticationService->getIdentity()->getTypeCode() == Organizer::USER_TYPE) {
                 //@todo organizzatore loggato - interfaccia con lista concerti inseriti con form di crud, logout
+
+                $allowedControllers = [
+                    ConcertController::class . '\concert',
+                ];
+
+                if (in_array($controllerName . '\\' . $actionName, $allowedControllers)) {
+                    return true;
+                }
+
+
+
                 $controller->redirect()->toRoute('home');
             }
 

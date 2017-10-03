@@ -7,13 +7,9 @@
 
 namespace Application;
 
-use Application\Service\AuthAdapter;
-use Application\Service\AuthenticationService;
-use Application\Service\Factory\AuthAdapterFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\View\View;
 
 return [
     'router' => [

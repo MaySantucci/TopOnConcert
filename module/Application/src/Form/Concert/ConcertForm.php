@@ -103,20 +103,13 @@ class ConcertForm extends Form
                 'value' => $this->concert ? $this->concert->getAvailability() : '',
             ],
         ]);
-        /*
         $this->add([
-            'type' => Element\Text::class,
-            'name' => 'organizer',
-            'options' => [
-                'label' => 'Organizzatore'
-            ],
+            'type' => Element\Hidden::class,
+            'name' => 'id',
             'attributes' => [
-                'placeholder' => 'Organizzatore',
-                'required' => true,
-                'value' => $this->concert ? $this->concert->getOrganizer() : '',
+                'value' => $this->concert ? $this->concert->getId() : '',
             ],
         ]);
-        */
         
         $this->add([
             'type' => Element\Submit::class,

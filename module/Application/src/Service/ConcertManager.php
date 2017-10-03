@@ -11,8 +11,20 @@ class ConcertManager {
      */
     private $entityManager;
 
-    public function __construct($entityManager) {
+    /**
+     * @var AuthenticationService
+     */
+    private $authenticationService;
+
+    /**
+     * @var \Application\Service\UserManager
+     */
+    private $userManager;
+
+    public function __construct($entityManager, $authenticationService, $userManager) {
         $this->entityManager = $entityManager;
+        $this->authenticationService = $authenticationService;
+        $this->userManager = $userManager;
     }
 
     public function getList() {
@@ -37,14 +49,13 @@ class ConcertManager {
         $concert->setPrice($data['price']);
         $concert->setLocation($data['location']);
         $concert->setAvailability($data['availability']);
-        $organizer = $this->entityManager->getRepository(\Application\Entity\Organizer::class)->find(3);
+        $organizer = $this->userManager->getCurrentUser();
         $concert->setOrganizer($organizer);
-        //echo \get_class($organizer);
 
         if ($isNew) {
             $this->entityManager->persist($concert);
         }
-        
+
         $this->entityManager->flush();
 
         return $concert;

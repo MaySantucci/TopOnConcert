@@ -10,6 +10,7 @@ use Zend\Authentication\Adapter\AdapterInterface;
 
 class AuthenticationService extends ZendAuthenticationService {
 
+
     /**
      * @return Customer|Organizer|null
      */
