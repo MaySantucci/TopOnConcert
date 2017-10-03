@@ -55,7 +55,7 @@ class UserController extends AbstractActionController
         return $viewModel;
     }
 
-    public function logutAction()
+    public function logoutAction()
     {
         $this->userManager->logout();
 

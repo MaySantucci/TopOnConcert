@@ -54,7 +54,6 @@ class UserManager {
     public function logout() {
         if ($this->authenticationService->hasIdentity()) {
             $this->authenticationService->clearIdentity();
-            $this->sessionManager->forgetMe();
         }
     }
 
@@ -114,7 +113,8 @@ class UserManager {
             UserController::class . '\loginCustomer',
             UserController::class . '\loginOrganizer',
             UserController::class . '\registerCustomer',
-            UserController::class . '\registerOrganizer'
+            UserController::class . '\registerOrganizer',
+            UserController::class . '\logout'
         ];
 
         if (in_array($controllerName . '\\' . $actionName, $allowedControllers)) {
@@ -123,11 +123,9 @@ class UserManager {
 
             // @todo aggiungere il controllo sul tipo di utente
             if ($this->authenticationService->getIdentity()->getTypeCode() == Customer::USER_TYPE) {
-                echo("sono un cliente");
                 //@todo cliente loggato - interfaccia con lista concerti, lista acquisti, logout
                 $controller->redirect()->toRoute('home');
             } else {
-                echo("sono un organizzatore");
                 //@todo organizzatore loggato - interfaccia con lista concerti inseriti con form di crud, logout
                 $controller->redirect()->toRoute('home');
             }

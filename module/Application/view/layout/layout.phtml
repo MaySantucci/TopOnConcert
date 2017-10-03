@@ -42,7 +42,7 @@
                 <li><a href="<?= $this->url('concert') ?>">Concerti</a></li>
                 <?php if ($this->identity()->isLoggedIn()) : ?>
                     <li>
-                        <a href="<?= $this->url('user', ['action' => 'logut']) ?>">
+                        <a href="<?= $this->url('user', ['action' => 'logout']) ?>">
                             Logout (<?= $this->identity()->getUser()->getFullName() ?> - <?= $this->identity()->getUser()->getTypeCode() ?>)
                         </a>
                     </li>
