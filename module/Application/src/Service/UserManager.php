@@ -40,6 +40,10 @@ class UserManager {
 
 
     public function getCurrentUser() {
+        if (!$this->authenticationService->hasIdentity()) {
+            return null;
+        }
+
         if ($this->currentUser === null) {
             $userId = $this->authenticationService->getIdentity()->getId();
             $userType = $this->authenticationService->getIdentity()->getTypeCode();

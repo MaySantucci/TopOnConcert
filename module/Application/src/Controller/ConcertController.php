@@ -30,10 +30,12 @@ class ConcertController extends AbstractActionController {
     }
 
     public function indexAction() {
-        $concerts = $this->concertManager->getList();
-
-       // var_dump($this->userManager->getUser());
-
+        if ($this->userManager->getCurrentUser()) {
+            $concerts = $this->userManager->getCurrentUser()->getConcerts();
+        } else {
+            $concerts = $this->concertManager->getList();
+        }
+        
         $viewModel = new ViewModel();
         $viewModel->setTemplate('concert/index');
         $viewModel->setVariable('concerts', $concerts);
