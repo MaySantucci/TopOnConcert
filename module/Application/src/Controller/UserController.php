@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Entity\Customer;
+use Application\Entity\Organizer;
 use Application\Form\User\LoginForm;
 use Application\Form\User\RegisterForm;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -35,14 +36,14 @@ class UserController extends AbstractActionController
 
     public function registerOrganizerAction()
     {
-        $form = $this->getRegisterForm('organizer');
+        $form = $this->getRegisterForm(Organizer::USER_TYPE);
 
         // Use a different view template for rendering the page.
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/register/register');
         $viewModel->setVariable('form', $form);
-        $viewModel->setVariable('userTypeName', 'Organizzatore');
-        $viewModel->setVariable('userTypeCode', 'organizer');
+        $viewModel->setVariable('userTypeName', 'organizzatore');
+        $viewModel->setVariable('userTypeCode', Organizer::USER_TYPE);
         return $viewModel;
     }
 
@@ -61,40 +62,40 @@ class UserController extends AbstractActionController
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/register/register');
         $viewModel->setVariable('form', $form);
-        $viewModel->setVariable('userTypeName', 'Cliente');
-        $viewModel->setVariable('userTypeCode', 'customer');
+        $viewModel->setVariable('userTypeName', 'cliente');
+        $viewModel->setVariable('userTypeCode', Customer::USER_TYPE);
         return $viewModel;
     }
 
     public function loginOrganizerAction()
     {
-        $form = $this->getLoginForm('organizer');
+        $form = $this->getLoginForm(Organizer::USER_TYPE);
 
         if ($this->getRequest()->isPost()) {
-            $this->tryLogin($form, 'organizer');
+            $this->tryLogin($form, Organizer::USER_TYPE);
         }
 
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/login/login');
         $viewModel->setVariable('form', $form);
-        $viewModel->setVariable('userTypeName', 'Organizzatore');
-        $viewModel->setVariable('userTypeCode', 'organizer');
+        $viewModel->setVariable('userTypeName', 'organizzatore');
+        $viewModel->setVariable('userTypeCode', Organizer::USER_TYPE);
         return $viewModel;
     }
 
     public function loginCustomerAction()
     {
-        $form = $this->getLoginForm('customer');
+        $form = $this->getLoginForm(Customer::USER_TYPE);
 
         if ($this->getRequest()->isPost()) {
-            $this->tryLogin($form, 'customer');
+            $this->tryLogin($form, Customer::USER_TYPE);
         }
 
         $viewModel = new ViewModel();
         $viewModel->setTemplate('user/login/login');
         $viewModel->setVariable('form', $form);
-        $viewModel->setVariable('userTypeName', 'Cliente');
-        $viewModel->setVariable('userTypeCode', 'customer');
+        $viewModel->setVariable('userTypeName', 'cliente');
+        $viewModel->setVariable('userTypeCode', Customer::USER_TYPE);
         return $viewModel;
     }
 

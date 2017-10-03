@@ -1,42 +1,105 @@
+<div class="row">
 
+    <!-- INTERFACCIA CLIENTE LOGGATO -->
+    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
+        <p>Area riservata - <?= $this->identity()->getUser()->getTypeCode() ?></p>    
+        <h3>Benvenuto 
+            <?= $this->identity()->getUser()->getFullName() ?>
+        </h3>
+    <?php endif; ?>
+
+    <!-- INTERFACCIA ORGANIZZATORE LOGGATO -->      
+    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
+        <p>Area riservata - <?= $this->identity()->getUser()->getTypeCode() ?></p>    
+        <h3>Benvenuto 
+            <?= $this->identity()->getUser()->getFullName() ?>
+        </h3>
+    <?php endif; ?>
+</div>
 
 <div class="row">
     <div class="jumbotron col-md-7">
         <h1><span class="zf-green">TopOnConcert.com</span></h1>
     </div>
-    <div class="col-md-3 col-lg-offset-1">
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">CLIENTE</h3>
+    <?php if (!$this->identity()->isLoggedIn()) : ?>
+        <div class="col-md-3 col-lg-offset-1">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">CLIENTE</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            Sei un appassionato di musica? Registrati e accedi subito per acquistare i biglietti dei concerti del tuo gruppo preferito!
+                        </p>
+
+                        <p><a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'register-customer']) ?>">Registrati</a>
+                            <a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'login-customer']) ?>">Accedi</a></p>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <p>
-                        Sei un appassionato di musica? Registrati e accedi subito per acquistare i biglietti dei concerti del tuo gruppo preferito!
-                    </p>
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">ORGANIZZATORE</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            Sei un organizzatore di concerti? Registrati e accedi subito per mettere in vendita i tuoi biglietti!
+                        </p>
 
-                    <p><a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'register-customer']) ?>">Registrati</a>
-                    <a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'login-customer']) ?>">Accedi</a></p>
-                          </div>
-                          </div>
+                        <p><a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'register-organizer']) ?>">Registrati</a>
+                            <a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'login-organizer']) ?>">Accedi</a></p>
+                    </div>
+                </div>
 
-                          </div>
-                          <div class="row">
-                          <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">ORGANIZZATORE</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <p>
-                                        Sei un organizzatore di concerti? Registrati e accedi subito per mettere in vendita i tuoi biglietti!
-                                    </p>
+            </div>
+        </div>
+    <?php endif; ?>
 
-                                    <p><a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'register-organizer']) ?>">Registrati</a>
-                                    <a class="btn btn-success pull-right" href="<?= $this->url('user', ['action' => 'login-organizer']) ?>">Accedi</a></p>
-                                </div>
-                            </div>
 
+
+    <!-- INTERFACCIA CLIENTE LOGGATO -->
+    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
+        <div class="col-md-3 col-lg-offset-1">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">CLIENTE</h3>
+                    </div>
+                    <div class="panel-body">
+                        <li><a>I miei acquisti</a></li>
+                        <li><a>Impostazioni</a></li>
+                        <li><a>Logout</a></li>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
+
+    <!-- INTERFACCIA ORGANIZZATORE LOGGATO -->
+    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
+        <div class="col-md-3 col-lg-offset-1">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">ORGANIZZATORE</h3>
+                    </div>
+                    <div class="panel-body">
+                        <a>Impostazioni</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+
+<div class="row">
+    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
+        <h4>Lista concerti </h4>
+
+    <?php endif; ?>
+    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
+        <h4>i miei concerti </h4>
+    <?php endif; ?>
+</div>

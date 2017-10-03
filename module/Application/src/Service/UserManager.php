@@ -10,8 +10,8 @@ use Application\Entity\Organizer;
 use Zend\Authentication\Result;
 use Zend\Mvc\MvcEvent;
 
-class UserManager
-{
+class UserManager {
+
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -27,23 +27,20 @@ class UserManager
      */
     private $authenticationService;
 
-    public function __construct($entityManager, $sessionManager, $authenticationService)
-    {
+    public function __construct($entityManager, $sessionManager, $authenticationService) {
         $this->entityManager = $entityManager;
         $this->sessionManager = $sessionManager;
         $this->authenticationService = $authenticationService;
     }
 
-    public function getUser()
-    {
+    public function getUser() {
         $a = $this->sessionManager->getStorage()->toArray();
         var_dump($a);
         die();
         return null;
     }
 
-    public function login($userTypeCode, $email, $password)
-    {
+    public function login($userTypeCode, $email, $password) {
         $this->logout();
 
         $authenticationAdapter = $this->authenticationService->getAdapter();
@@ -54,15 +51,14 @@ class UserManager
         return $result;
     }
 
-    public function logout()
-    {
+    public function logout() {
         if ($this->authenticationService->hasIdentity()) {
             $this->authenticationService->clearIdentity();
+            $this->sessionManager->forgetMe();
         }
     }
 
-    private function validatePassword($user, $password)
-    {
+    private function validatePassword($user, $password) {
 //        $bcrypt = new Bcrypt();
 //        $passwordHash = $user->getPassword();
 //        if ($bcrypt->verify($password, $passwordHash)) {
@@ -77,13 +73,12 @@ class UserManager
      * @param $data
      * @return Customer|Organizer
      */
-    public function editUser($userTypeCode, $user, $data)
-    {
+    public function editUser($userTypeCode, $user, $data) {
         $isNew = false;
         if ($user === null) {
-            if ($userTypeCode == 'customer') {
+            if ($userTypeCode == Customer::USER_TYPE) {
                 $user = new Customer();
-            } elseif ($userTypeCode == 'organizer') {
+            } elseif ($userTypeCode == Organizer::USER_TYPE) {
                 $user = new Organizer();
             }
 
@@ -105,8 +100,7 @@ class UserManager
         return $user;
     }
 
-    public function initUser(MvcEvent $event)
-    {
+    public function initUser(MvcEvent $event) {
         $controller = $event->getTarget();
 
         $controllerName = $event->getRouteMatch()->getParam('controller', null);
@@ -128,10 +122,20 @@ class UserManager
         } else if ($this->authenticationService->hasIdentity()) {
 
             // @todo aggiungere il controllo sul tipo di utente
+            if ($this->authenticationService->getIdentity()->getTypeCode() == Customer::USER_TYPE) {
+                echo("sono un cliente");
+                //@todo cliente loggato - interfaccia con lista concerti, lista acquisti, logout
+                $controller->redirect()->toRoute('home');
+            } else {
+                echo("sono un organizzatore");
+                //@todo organizzatore loggato - interfaccia con lista concerti inseriti con form di crud, logout
+                $controller->redirect()->toRoute('home');
+            }
 
             return true;
         }
 
         $controller->redirect()->toRoute('home');
     }
+
 }
