@@ -38,9 +38,21 @@ class UserManager {
         $this->authenticationService = $authenticationService;
     }
 
+    public function isLoggedin(){
+        return $this->authenticationService->hasIdentity();
+    }
+
+    public function isCustomer(){
+        return $this->isLoggedin() && $this->getCurrentUser()->getTypeCode() == Customer::USER_TYPE;
+    }
+
+    public function isOrganizer(){
+        return $this->isLoggedin() && $this->getCurrentUser()->getTypeCode() == Organizer::USER_TYPE;
+    }
+
 
     public function getCurrentUser() {
-        if (!$this->authenticationService->hasIdentity()) {
+        if (!$this->isLoggedin()) {
             return null;
         }
 
@@ -145,6 +157,15 @@ class UserManager {
             // @todo aggiungere il controllo sul tipo di utente
             if ($this->authenticationService->getIdentity()->getTypeCode() == Customer::USER_TYPE) {
                 //@todo cliente loggato - interfaccia con lista concerti, lista acquisti, logout
+
+                $allowedControllers = [
+                    ConcertController::class . '\buyConcert',
+                ];
+
+                if (in_array($controllerName . '\\' . $actionName, $allowedControllers)) {
+                    return true;
+                }
+
                 $controller->redirect()->toRoute('home');
             } else if ($this->authenticationService->getIdentity()->getTypeCode() == Organizer::USER_TYPE) {
                 //@todo organizzatore loggato - interfaccia con lista concerti inseriti con form di crud, logout

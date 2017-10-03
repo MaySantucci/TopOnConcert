@@ -2,11 +2,13 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Concert;
 use Application\Form\Concert\ConcertForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class ConcertController extends AbstractActionController {
+class ConcertController extends AbstractActionController
+{
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -23,19 +25,21 @@ class ConcertController extends AbstractActionController {
      */
     private $userManager;
 
-    public function __construct($entityManager, $concertManager, $userManager) {
+    public function __construct($entityManager, $concertManager, $userManager)
+    {
         $this->entityManager = $entityManager;
         $this->concertManager = $concertManager;
         $this->userManager = $userManager;
     }
 
-    public function indexAction() {
-        if ($this->userManager->getCurrentUser()) {
+    public function indexAction()
+    {
+        if ($this->userManager->isOrganizer()) {
             $concerts = $this->userManager->getCurrentUser()->getConcerts();
         } else {
             $concerts = $this->concertManager->getList();
         }
-        
+
         $viewModel = new ViewModel();
         $viewModel->setTemplate('concert/index');
         $viewModel->setVariable('concerts', $concerts);
@@ -43,7 +47,8 @@ class ConcertController extends AbstractActionController {
     }
 
     //metodo per mostrare il template per l'aggiunta/modifica del concerto
-    public function concertAction() {
+    public function concertAction()
+    {
         $form = $this->getConcertForm();
         // Use a different view template for rendering the page.
         $viewModel = new ViewModel();
@@ -52,8 +57,9 @@ class ConcertController extends AbstractActionController {
         return $viewModel;
     }
 
-    private function getConcertForm() {
-        $id = (int) $this->params()->fromRoute('id', false);
+    private function getConcertForm()
+    {
+        $id = (int)$this->params()->fromRoute('id', false);
 
         if ($id) {
             $concert = $this->entityManager->getRepository(\Application\Entity\Concert::class)->find($id);
@@ -96,17 +102,48 @@ class ConcertController extends AbstractActionController {
 
     // metodo per eliminare un concerto 
 
-    public function deleteConcertAction() {
-        $id = (int) $this->params()->fromRoute('id', false);
+    public function deleteConcertAction()
+    {
+        $id = (int)$this->params()->fromRoute('id', false);
         $delete = $this->concertManager->deleteConcert($id);
 
         if ($delete) {
             $this->flashMessenger()->addInfoMessage("Concerto eliminato con successo.");
-        } else {            
+        } else {
             $this->flashMessenger()->addInfoMessage("Non &egrave; stato possibile eliminare il concerto.");
         }
-        
+
         return $this->redirect()->toRoute('concert');
+    }
+
+    public function buyConcertAction()
+    {
+        $id = (int)$this->params()->fromRoute('id', false);
+
+        $concert = $this->entityManager->getRepository(Concert::class)->find($id);
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('concert/buyconcert');
+        $viewModel->setVariable('concert', $concert);
+        return $viewModel;
+
+    }
+
+    public function payConcertAction()
+    {
+        $id = (int)$this->params()->fromRoute('id', false);
+
+        /** @var \Application\Entity\Concert $concert */
+        $concert = $this->entityManager->getRepository(Concert::class)->find($id);
+        if($concert->getAvailability() > 0){
+            $concert->setAvailability($concert->getAvailability()-1);
+            $this->entityManager->flush();
+            return $this->redirect()->toRoute('home');
+
+        } else {
+            return $this->redirect()->toRoute('concert', ['action'=>'buyConcert', 'id' => $id] );
+        }
+
     }
 
 }
