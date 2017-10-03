@@ -6,25 +6,38 @@ use Zend\View\Helper\AbstractHelper;
 
 class Authentication extends AbstractHelper
 {
+    /**
+     * @var \Application\Service\UserManager
+     */
+    private $userManager;
 
-    private $authenticationService;
-
-    public function __construct($authenticationService)
-    {
-        $this->authenticationService = $authenticationService;
+    public function __construct($userManager){
+        $this->userManager = $userManager;
     }
 
     public function getUser()
     {
-        if ($this->isLoggedIn()) {
-            return $this->authenticationService->getIdentity();
-        }
-        return null;
+            return $this->userManager->getCurrentUser();
     }
 
     public function isLoggedIn()
     {
-        return $this->authenticationService->hasIdentity();
+        return $this->userManager->isLoggedin();
     }
+
+    public function isCustomer()
+    {
+        return $this->userManager->isCustomer();
+    }
+
+    public function isOrganizer()
+    {
+        return $this->userManager->isOrganizer();
+    }
+
+
+
+
+
 
 }
