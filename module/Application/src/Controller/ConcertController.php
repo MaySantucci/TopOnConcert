@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Entity\Concert;
+use Application\Entity\Ticket;
 use Application\Form\Concert\ConcertForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -132,11 +133,16 @@ class ConcertController extends AbstractActionController
     public function payConcertAction()
     {
         $id = (int)$this->params()->fromRoute('id', false);
+        $user = $this->userManager->getCurrentUser();
 
         /** @var \Application\Entity\Concert $concert */
         $concert = $this->entityManager->getRepository(Concert::class)->find($id);
         if($concert->getAvailability() > 0){
             $concert->setAvailability($concert->getAvailability()-1);
+            $ticket = new Ticket();
+            $ticket->setConcert($concert);
+            $ticket->setCustomer($user);
+            $this->entityManager->persist($ticket);
             $this->entityManager->flush();
             return $this->redirect()->toRoute('home');
 
