@@ -94,12 +94,3 @@
     <?php endif; ?>
 </div>
 
-<div class="row">
-    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
-        <h4>Lista concerti </h4>
-
-    <?php endif; ?>
-    <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Organizer::USER_TYPE) : ?>
-        <h4>i miei concerti </h4>
-    <?php endif; ?>
-</div>

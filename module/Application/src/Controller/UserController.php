@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use Application\Service\AuthenticationService;
 use Application\Entity\Customer;
 use Application\Entity\Organizer;
 use Application\Form\User\LoginForm;
@@ -23,10 +24,16 @@ class UserController extends AbstractActionController
      */
     private $userManager;
 
-    public function __construct($entityManager, $userManager)
+    /**
+     * @var AuthenticationService
+     */
+    private $authenticationService;
+
+    public function __construct($entityManager, $userManager, $authenticationService)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
+        $this->authenticationService = $authenticationService;
     }
 
     public function indexAction()
@@ -36,6 +43,7 @@ class UserController extends AbstractActionController
 
     public function registerOrganizerAction()
     {
+        $this->checkLogin();
         $form = $this->getRegisterForm(Organizer::USER_TYPE);
 
         // Use a different view template for rendering the page.
@@ -56,6 +64,7 @@ class UserController extends AbstractActionController
 
     public function registerCustomerAction()
     {
+        $this->checkLogin();
         $form = $this->getRegisterForm(Customer::USER_TYPE);
 
         // Use a different view template for rendering the page.
@@ -69,6 +78,7 @@ class UserController extends AbstractActionController
 
     public function loginOrganizerAction()
     {
+        $this->checkLogin();
         $form = $this->getLoginForm(Organizer::USER_TYPE);
 
         if ($this->getRequest()->isPost()) {
@@ -85,6 +95,7 @@ class UserController extends AbstractActionController
 
     public function loginCustomerAction()
     {
+        $this->checkLogin();
         $form = $this->getLoginForm(Customer::USER_TYPE);
 
         if ($this->getRequest()->isPost()) {
@@ -173,5 +184,11 @@ class UserController extends AbstractActionController
             }
         }
         return $form;
+    }
+
+    private function checkLogin() {
+        if($this->authenticationService->hasIdentity()){
+            $this->redirect()->toRoute('home');
+        }
     }
 }
