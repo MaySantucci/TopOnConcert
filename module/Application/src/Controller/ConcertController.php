@@ -151,5 +151,23 @@ class ConcertController extends AbstractActionController
         }
 
     }
+    
+        public function cancelBuyAction() {
+        $id_ticket = (int) $this->params()->fromRoute('id', false);
+        $ticket = $this->entityManager->getRepository(Ticket::class)->find($id_ticket);
+        
+        
+        /** @var \Application\Entity\Ticket $ticket */
+        $id_concert = $ticket->getConcert()->getId();
+
+        /** @var \Application\Entity\Concert $concert */
+        $concert = $this->entityManager->getRepository(Concert::class)->find($id_concert);
+        $concert->setAvailability($concert->getAvailability() + 1);
+
+        $this->entityManager->remove($ticket);
+        $this->entityManager->flush();
+
+        return $this->redirect()->toRoute('ticket');
+    }
 
 }

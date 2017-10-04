@@ -26,6 +26,10 @@ $this->headTitle($title);
             <td><?= date_format($ticket->getConcert()->getDate(), 'd-m-Y')?></td>
             <td><?= $ticket->getConcert()->getPrice() ?></td>
             
+        <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
+            <td><a class="btn btn-danger" href="<?= $this->url('concert', ['action' => 'cancel-buy' , 'id' => $ticket->getId()]) ?>">Annulla acquisto</a></td>
+        <?php endif; ?>
+            
         </tr>
     <?php endforeach; ?>
     
