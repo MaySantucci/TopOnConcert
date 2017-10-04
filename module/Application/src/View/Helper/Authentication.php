@@ -11,13 +11,14 @@ class Authentication extends AbstractHelper
      */
     private $userManager;
 
-    public function __construct($userManager){
+    public function __construct($userManager)
+    {
         $this->userManager = $userManager;
     }
 
     public function getUser()
     {
-            return $this->userManager->getCurrentUser();
+        return $this->userManager->getCurrentUser();
     }
 
     public function isLoggedIn()
@@ -34,10 +35,5 @@ class Authentication extends AbstractHelper
     {
         return $this->userManager->isOrganizer();
     }
-
-
-
-
-
 
 }

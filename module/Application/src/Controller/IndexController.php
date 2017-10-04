@@ -8,6 +8,7 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController

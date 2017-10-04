@@ -51,7 +51,7 @@ $this->headTitle($title);
             <?php endif; ?>
 
             <!-- INTERFACCIA CLIENTE LOGGATO -->
-            <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
+            <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE)  : ?>
                 <td>
                     <a class="btn btn-success" href="<?= $this->url('concert', ['action' => 'buy-concert', 'id' => $concert->getId()]) ?>">Acquista</a>
                 </td>
