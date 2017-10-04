@@ -1,0 +1,32 @@
+<?php
+
+$title = 'BIGLIETTI ACQUISTATI';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+
+
+<table class="table">
+    <tr>
+        <th>Id_Ticket</th>
+        <th>Gruppo</th>
+        <th>Luogo</th>
+        <th>Data</th>
+        <th>Prezzo</th>
+        <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
+            <th> &nbsp;</th>
+        <?php endif; ?>
+
+    </tr><?php foreach ($tickets as $ticket) : ?>
+        <?php /** @var \Application\Entity\Ticket $ticket */ ?>
+        <tr>
+            <td><?= $ticket->getId() ?></td>
+            <td><?= $ticket->getConcert()->getArtist() ?></td>
+            <td><?= $ticket->getConcert()->getLocation() ?></td>
+            <td><?= date_format($ticket->getConcert()->getDate(), 'd-m-Y')?></td>
+            <td><?= $ticket->getConcert()->getPrice() ?></td>
+            
+        </tr>
+    <?php endforeach; ?>
+    
+</table>

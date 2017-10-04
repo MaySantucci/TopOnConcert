@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
  * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
@@ -54,13 +55,24 @@ return [
                     ],
                 ],
             ],
+            'ticket' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/ticket[/:action][/:id]',
+                    'defaults' => [
+                        'controller' => Controller\TicketController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\UserController::class => \Application\Controller\Factory\UserControllerFactory::class,
-            Controller\ConcertController::class => \Application\Controller\Factory\ConcertControllerFactory::class
+            Controller\ConcertController::class => \Application\Controller\Factory\ConcertControllerFactory::class,
+            Controller\TicketController::class => \Application\Controller\Factory\TicketControllerFactory::class
         ],
     ],
     'service_manager' => [
@@ -72,6 +84,7 @@ return [
             Service\UserManager::class => Service\Factory\UserManagerFactory::class,
             Service\ConcertManager::class => Service\Factory\ConcertManagerFactory::class,
             Service\OrganizerManager::class => Service\Factory\OrganizerManagerFactory::class,
+            Service\TicketManager::class => Service\Factory\TicketManagerFactory::class,
             Service\AuthAdapter::class => Service\Factory\AuthAdapterFactory::class,
             Service\AuthenticationService::class => Service\Factory\AuthenticationServiceFactory::class,
         ],

@@ -5,6 +5,7 @@ namespace Application\Service;
 use Application\Controller\ConcertController;
 use Application\Controller\IndexController;
 use Application\Controller\UserController;
+use Application\Controller\TicketController;
 use Application\Entity\Customer;
 use Application\Entity\Organizer;
 use Zend\Authentication\Result;
@@ -160,6 +161,7 @@ class UserManager {
 
                 $allowedControllers = [
                     ConcertController::class . '\buyConcert',
+                    TicketController::class . '\index',
                 ];
 
                 if (in_array($controllerName . '\\' . $actionName, $allowedControllers)) {

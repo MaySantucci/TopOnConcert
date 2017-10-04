@@ -41,7 +41,7 @@
                 <li class="active"><a href="<?= $this->url('home') ?>">Home</a></li>
                 <li><a href="<?= $this->url('concert') ?>">Concerti</a></li>
                 <?php if ($this->identity()->isCustomer()) : ?>
-                    <li><a href="">I miei biglietti</a></li>
+                    <li><a href="<?= $this->url('ticket') ?>">I miei biglietti</a></li>
                 <?php endif; ?>
                 <?php if ($this->identity()->isLoggedIn()) : ?>
                     <li>

@@ -144,7 +144,7 @@ class ConcertController extends AbstractActionController
             $ticket->setCustomer($user);
             $this->entityManager->persist($ticket);
             $this->entityManager->flush();
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('ticket');
 
         } else {
             return $this->redirect()->toRoute('concert', ['action'=>'buyConcert', 'id' => $id] );
