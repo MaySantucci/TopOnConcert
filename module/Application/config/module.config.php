@@ -92,11 +92,9 @@ return [
     'view_helpers' => [
         'factories' => [
             \Application\View\Helper\Authentication::class => \Application\View\Helper\Factory\AuthenticationFactory::class,
-            \Application\View\Helper\FlashMessenger::class => \Application\View\Helper\Factory\FlashMessengerFactory::class,
         ],
         'aliases' => [
             'identity' => \Application\View\Helper\Authentication::class,
-            'flashMessenger' => \Application\View\Helper\FlashMessenger::class,
         ],
     ],
     'view_manager' => [
