@@ -39,18 +39,17 @@ class UserManager {
         $this->authenticationService = $authenticationService;
     }
 
-    public function isLoggedin(){
+    public function isLoggedin() {
         return $this->authenticationService->hasIdentity();
     }
 
-    public function isCustomer(){
+    public function isCustomer() {
         return $this->isLoggedin() && $this->getCurrentUser()->getTypeCode() == Customer::USER_TYPE;
     }
 
-    public function isOrganizer(){
+    public function isOrganizer() {
         return $this->isLoggedin() && $this->getCurrentUser()->getTypeCode() == Organizer::USER_TYPE;
     }
-
 
     public function getCurrentUser() {
         if (!$this->isLoggedin()) {
@@ -113,6 +112,8 @@ class UserManager {
                 $user = new Customer();
             } elseif ($userTypeCode == Organizer::USER_TYPE) {
                 $user = new Organizer();
+                $user->setCompany($data['company']);
+                $user->setVat($data['vat']);
             }
 
             $isNew = true;

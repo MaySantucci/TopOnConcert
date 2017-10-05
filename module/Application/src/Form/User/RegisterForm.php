@@ -51,7 +51,6 @@ class RegisterForm extends Form
             'attributes' => [
                 'placeholder' => 'Nome e Cognome',
                 'required' => true,
-                'autofocus' => true,
                 'value' => $this->user ? $this->user->getFullName() : '',
             ],
         ]);
@@ -64,7 +63,6 @@ class RegisterForm extends Form
             'attributes' => [
                 'placeholder' => 'Azienda',
                 'required' => false,
-                'autofocus' => true,
                 'value' => $this->user ? $this->user->getCompany() : '',
             ],
         ]);$this->add([
@@ -76,7 +74,6 @@ class RegisterForm extends Form
             'attributes' => [
                 'placeholder' => 'P.IVA',
                 'required' => false,
-                'autofocus' => true,
                 'value' => $this->user ? $this->user->getVat() : '',
             ],
         ]);
