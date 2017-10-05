@@ -51,9 +51,13 @@ $this->headTitle($title);
             <?php endif; ?>
 
             <!-- INTERFACCIA CLIENTE LOGGATO -->
-            <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE)  : ?>
+            <?php if ($this->identity()->isLoggedIn() && $this->identity()->getUser()->getTypeCode() == Application\Entity\Customer::USER_TYPE) : ?>
                 <td>
-                    <a class="btn btn-success" href="<?= $this->url('concert', ['action' => 'buy-concert', 'id' => $concert->getId()]) ?>">Acquista</a>
+                    <?php if ($concert->getAvailability() === 0) : ?>
+                        <a class="btn btn-action" href="<?= $this->url('concert', ['action' => 'buy-concert', 'id' => $concert->getId()]) ?>">Non disponibile</a> 
+                    <?php else : ?>
+                        <a class="btn btn-success" href="<?= $this->url('concert', ['action' => 'buy-concert', 'id' => $concert->getId()]) ?>">Acquista</a>
+                    <?php endif; ?>
                 </td>
             <?php endif; ?>
 
