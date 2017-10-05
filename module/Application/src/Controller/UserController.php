@@ -129,7 +129,7 @@ class UserController extends AbstractActionController
             $result = $this->userManager->login($userTypeCode, $data['email'], $data['password']);
 
             if ($result->getCode() === Result::SUCCESS) {
-                $this->redirect()->toRoute('concert');
+                $this->redirect()->toRoute('home');
             } else {
                 foreach ($result->getMessages() as $message) {
                     $this->flashMessenger()->addErrorMessage($message);

@@ -39,7 +39,7 @@ echo $this->form()->openTag($form);
 <div class="form-group">
     <?= $this->formLabel($email) ?>
     <?= $this->formElement($email) ?>
-    <?= $this->formElementErrors()->render($email, ['class' => 'help-block']) ?>
+    <?= $this->formElementErrors()->render($email, ['alert', 'alert-danger']) ?>
 </div>
 
 <div class="form-group">
@@ -49,11 +49,22 @@ echo $this->form()->openTag($form);
 </div>
 
 
-<?= $this->flashMessenger()->render('error', ['alert', 'alert-danger']); ?>
-<ul class="alert alert-danger">
-    <p>Credenziali non valide</p>
-</ul>
 
 <?php
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div class="alert alert-danger">
+                                <p>Credenziali non valide.</p>
+                                
+                            ')
+        ->setMessageSeparatorString('</p><p>')
+        ->setMessageCloseString('</div>');
+
+echo $flash->render('error', array('alert', 'alert-dismissible', 'alert-danger'));
+echo $flash->render('info', array('alert', 'alert-dismissible', 'alert-info'));
+echo $flash->render('default', array('alert', 'alert-dismissible', 'alert-warning'));
+echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
+
 echo $this->formSubmit($submit);
 echo $this->form()->closeTag();
+
+
