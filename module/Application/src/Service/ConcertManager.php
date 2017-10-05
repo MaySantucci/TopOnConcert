@@ -68,19 +68,15 @@ class ConcertManager {
      */
     public function deleteConcert($id) {
         $concert_removed = $this->entityManager->getRepository(Concert::class)->find($id);
-
-        echo "\n id passato = " . $id;
-
         if ($id === null | $id < 0) {
             echo "concerto non trovato" . $id;
             return false;
         }
-        
+            echo "concerto trovato" . $id;
           $this->entityManager->remove($concert_removed);
           $this->entityManager->flush();
-
-          echo "concerto trovato" . $id;
-
+          
+            die();
           return true;
         
     }

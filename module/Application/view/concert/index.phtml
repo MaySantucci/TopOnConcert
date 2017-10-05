@@ -64,3 +64,14 @@ $this->headTitle($title);
         </tr>
     <?php endforeach; ?>
 </table>
+    
+<?php    
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div class="alert alert-success">
+                                
+                            ')
+        ->setMessageSeparatorString('</p><p>')
+        ->setMessageCloseString('</div>');
+
+echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
+

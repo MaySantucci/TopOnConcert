@@ -104,10 +104,9 @@ class ConcertController extends AbstractActionController
     // metodo per eliminare un concerto 
 
     public function deleteConcertAction()
-    {
-        $id = (int)$this->params()->fromRoute('id', false);
+    {   
+        $id = (int)$this->params()->fromRoute('id', false);     
         $delete = $this->concertManager->deleteConcert($id);
-
         if ($delete) {
             $this->flashMessenger()->addInfoMessage("Concerto eliminato con successo.");
         } else {

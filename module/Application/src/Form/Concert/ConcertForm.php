@@ -108,7 +108,7 @@ class ConcertForm extends Form
             'type' => Element\Submit::class,
             'name' => 'concert_submit',
             'attributes' => [
-                'value' => 'Aggiungi'
+                'value' => 'Fatto'
             ],
         ]);
     }

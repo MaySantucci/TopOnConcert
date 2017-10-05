@@ -20,22 +20,6 @@ $form->prepare();
 echo $this->form()->openTag($form);
 ?>
 
-<?php /* if ($userTypeCode == 'organizer') : ?>
-
-  <div class="form-group">
-  <?= $this->formLabel($company) ?>
-  <?= $this->formElement($company) ?>
-  <?= $this->formElementErrors()->render($company, ['class' => 'help-block']) ?>
-  </div>
-
-  <div class="form-group">
-  <?= $this->formLabel($vat) ?>
-  <?= $this->formElement($vat) ?>
-  <?= $this->formElementErrors()->render($vat, ['class' => 'help-block']) ?>
-  </div>
-
-  <?php endif; */ ?>
-
 <div class="form-group">
     <?= $this->formLabel($email) ?>
     <?= $this->formElement($email) ?>
@@ -53,17 +37,12 @@ echo $this->form()->openTag($form);
 <?php
 $flash = $this->flashMessenger();
 $flash->setMessageOpenFormat('<div class="alert alert-danger">
-                                <p>Credenziali non valide.</p>
                                 
                             ')
         ->setMessageSeparatorString('</p><p>')
         ->setMessageCloseString('</div>');
 
 echo $flash->render('error', array('alert', 'alert-dismissible', 'alert-danger'));
-echo $flash->render('info', array('alert', 'alert-dismissible', 'alert-info'));
-echo $flash->render('default', array('alert', 'alert-dismissible', 'alert-warning'));
-echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
-
 echo $this->formSubmit($submit);
 echo $this->form()->closeTag();
 
