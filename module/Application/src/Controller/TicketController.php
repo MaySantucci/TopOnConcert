@@ -2,9 +2,6 @@
 
 namespace Application\Controller;
 
-use Application\Entity\Concert;
-use Application\Entity\Ticket;
-use Application\Entity\Customer;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 

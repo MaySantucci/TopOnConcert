@@ -2,7 +2,7 @@
 $title = 'Registrazione ' . $userTypeName;
 $this->headTitle($title);
 ?>
-    <h1><?= $this->escapeHtml($title) ?></h1>
+<h1><?= $this->escapeHtml($title) ?></h1>
 
 <?php
 $nome = $form->get('fullName');
@@ -10,6 +10,12 @@ $nome->setAttribute('class', 'form-control');
 
 $email = $form->get('email');
 $email->setAttribute('class', 'form-control');
+
+$company = $form->get('company');
+$company->setAttribute('class', 'form-control');
+
+$vat = $form->get('vat');
+$vat->setAttribute('class', 'form-control');
 
 $password = $form->get('password');
 $password->setAttribute('class', 'form-control');
@@ -23,7 +29,13 @@ $form->prepare();
 echo $this->form()->openTag($form);
 ?>
 
-<?php /*if ($userTypeCode == 'organizer') : ?>
+<div class="form-group">
+    <?= $this->formLabel($nome) ?>
+    <?= $this->formElement($nome) ?>
+    <?= $this->formElementErrors()->render($nome, ['class' => 'help-block']) ?>
+</div>
+
+<?php if ($userTypeCode == 'organizer') : ?>
 
     <div class="form-group">
         <?= $this->formLabel($company) ?>
@@ -37,25 +49,19 @@ echo $this->form()->openTag($form);
         <?= $this->formElementErrors()->render($vat, ['class' => 'help-block']) ?>
     </div>
 
-<?php endif;*/ ?>
+<?php endif; ?>
 
-    <div class="form-group">
-        <?= $this->formLabel($nome) ?>
-        <?= $this->formElement($nome) ?>
-        <?= $this->formElementErrors()->render($nome, ['class' => 'help-block']) ?>
-    </div>
+<div class="form-group">
+    <?= $this->formLabel($email) ?>
+    <?= $this->formElement($email) ?>
+    <?= $this->formElementErrors()->render($email, ['class' => 'help-block']) ?>
+</div>
 
-    <div class="form-group">
-        <?= $this->formLabel($email) ?>
-        <?= $this->formElement($email) ?>
-        <?= $this->formElementErrors()->render($email, ['class' => 'help-block']) ?>
-    </div>
-
-    <div class="form-group">
-        <?= $this->formLabel($password) ?>
-        <?= $this->formElement($password) ?>
-        <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
-    </div>
+<div class="form-group">
+    <?= $this->formLabel($password) ?>
+    <?= $this->formElement($password) ?>
+    <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
+</div>
 
 <?php
 echo $this->formSubmit($submit);

@@ -57,6 +57,31 @@ class RegisterForm extends Form
         ]);
         $this->add([
             'type' => Element\Text::class,
+            'name' => 'company',
+            'options' => [
+                'label' => 'Azienda',
+            ],
+            'attributes' => [
+                'placeholder' => 'Azienda',
+                'required' => false,
+                'autofocus' => true,
+                'value' => $this->user ? $this->user->getCompany() : '',
+            ],
+        ]);$this->add([
+            'type' => Element\Text::class,
+            'name' => 'vat',
+            'options' => [
+                'label' => 'P.IVA',
+            ],
+            'attributes' => [
+                'placeholder' => 'P.IVA',
+                'required' => false,
+                'autofocus' => true,
+                'value' => $this->user ? $this->user->getVat() : '',
+            ],
+        ]);
+        $this->add([
+            'type' => Element\Text::class,
             'name' => 'email',
             'options' => [
                 'label' => 'E-mail'
@@ -126,6 +151,23 @@ class RegisterForm extends Form
                     'options' => [
                         'entityManager' => $this->entityManager,
                         'user' => $this->user
+                    ],
+                ],
+            ],
+        ]);
+        
+                $inputFilter->add([
+            'name' => 'vat',
+            'required' => false,
+            'filters' => [
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 11,
+                        'max' => 11
                     ],
                 ],
             ],
